@@ -185,7 +185,7 @@ export default function ConsignesNuit() {
       style.id = 'print-scale-style-nuit';
       document.head.appendChild(style);
     }
-    style.textContent = `@page { margin: 4mm 8mm !important; } @media print { .print-scale-wrapper-nuit tr { min-height: ${rowHeight}px !important; page-break-inside: avoid !important; break-inside: avoid !important; } .print-scale-wrapper-nuit td { padding-top: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; padding-bottom: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; } }`;
+    style.textContent = `@media print { .print-scale-wrapper-nuit td { padding-top: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; padding-bottom: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; } }`;
     return () => {};
   }, [rowHeight, fontSize]);
 
@@ -372,7 +372,8 @@ export default function ConsignesNuit() {
 
     // A4 paysage, marges 4mm/8mm → hauteur utilisable ≈ 764px à zoom 100%
     // On divise par currentZoom pour avoir les px dans le référentiel du wrapper actuel
-    const PAGE_H = 764 / currentZoom;
+    // A4 paysage, marges globals.css = 8mm tout autour → (210-16)mm × 3.7795 = 733px à 100%
+    const PAGE_H = 733 / currentZoom;
 
     const mapadCount = mapadResidents.length || 1;
     const lsCount = longSejourResidents.length || 1;
