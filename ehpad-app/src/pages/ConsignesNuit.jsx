@@ -333,45 +333,62 @@ export default function ConsignesNuit() {
       toast.success("Consignes sauvegardées", { duration: 3000 });
     }
 
-    // Auto-ajustement du zoom pour remplir exactement 2 pages A4 paysage
-    // (agrandit si peu de contenu, réduit si trop de contenu)
     const wrapper = document.querySelector('.print-scale-wrapper-nuit');
-    if (wrapper) {
-      // Le header d'impression est hidden à l'écran mais visible en impression :
-      // on le montre brièvement pour l'inclure dans la mesure
-      const printHeader = wrapper.firstElementChild;
-      let printHeaderHeight = 0;
-      if (printHeader && getComputedStyle(printHeader).display === 'none') {
-        printHeader.style.display = 'block';
-        void wrapper.offsetHeight; // force reflow
-        printHeaderHeight = printHeader.getBoundingClientRect().height / (printScale / 100);
-        printHeader.style.display = '';
-      }
+    const mapadSection = document.querySelector('.print-mapad-section');
+    const longSejourSection = document.querySelector('.print-longsejour-section');
 
-      // Hauteur naturelle = (hauteur rendue ÷ zoom actuel) + header impression
-      const renderedHeight = wrapper.getBoundingClientRect().height;
-      const naturalHeight = renderedHeight / (printScale / 100) + printHeaderHeight;
-
-      // Cible : 2 pages A4 paysage (210mm - 8mm marges) × 2 = 1528px
-      // Marge sécurité 5% → 1452px
-      const TARGET_PX = 1452;
-      const autoScale = Math.max(40, Math.min(400, Math.round((TARGET_PX / naturalHeight) * 100)));
-
-      // CSS print : annuler break-inside:avoid inline des <tr> pour que les rangées
-      // se divisent naturellement entre les pages et utilisent tout l'espace
-      const styleEl = document.getElementById('print-scale-style-nuit');
-      if (styleEl) {
-        styleEl.textContent = `@page { margin: 4mm 8mm !important; } @media print { .print-scale-wrapper-nuit tr { break-inside: auto !important; page-break-inside: auto !important; min-height: ${rowHeight}px !important; } .print-scale-wrapper-nuit td { padding-top: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; padding-bottom: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; } }`;
-      }
-
-      setPrintScale(autoScale);
-      localStorage.setItem('nuit_printScale', String(autoScale));
-      // Attendre le re-render React avant d'imprimer
-      setTimeout(() => window.print(), 200);
+    if (!wrapper || !mapadSection || !longSejourSection) {
+      window.print();
       return;
     }
 
-    window.print();
+    // Réinitialiser le zoom à 1 pour mesures précises
+    const savedZoom = wrapper.style.zoom;
+    wrapper.style.zoom = '1';
+
+    // Montrer le header d'impression (hidden à l'écran) pour inclure sa hauteur
+    const printHeader = mapadSection.querySelector('.hidden');
+    if (printHeader) printHeader.style.display = 'block';
+
+    void wrapper.offsetHeight; // force reflow
+
+    const mapadH = mapadSection.getBoundingClientRect().height;
+    const longSejourH = longSejourSection.getBoundingClientRect().height;
+
+    // Restaurer
+    if (printHeader) printHeader.style.display = '';
+    wrapper.style.zoom = savedZoom;
+
+    // A4 paysage, marges @page 4mm/8mm → hauteur utilisable : (210−8)mm × 3.7795 ≈ 764px
+    const PAGE_H = 764;
+    const mapadScale      = Math.max(40, Math.min(400, Math.round((PAGE_H / mapadH) * 100)));
+    const longSejourScale = Math.max(40, Math.min(400, Math.round((PAGE_H / longSejourH) * 100)));
+
+    // CSS : reset zoom global, zoom indépendant par section, saut de page après MAPAD
+    const styleEl = document.getElementById('print-scale-style-nuit');
+    if (styleEl) {
+      styleEl.textContent = `
+        @page { margin: 4mm 8mm !important; }
+        @media print {
+          .print-scale-wrapper-nuit { zoom: 1 !important; }
+          .print-mapad-section {
+            zoom: ${mapadScale}% !important;
+            break-after: page !important;
+            page-break-after: always !important;
+          }
+          .print-longsejour-section {
+            zoom: ${longSejourScale}% !important;
+            margin-top: 0 !important;
+          }
+          .print-mapad-section tr, .print-longsejour-section tr {
+            break-inside: auto !important;
+            page-break-inside: auto !important;
+          }
+        }
+      `;
+    }
+
+    setTimeout(() => window.print(), 200);
   };
 
   const floorResidents = residents.filter((r) => r.floor === activeFloor);
@@ -606,71 +623,65 @@ export default function ConsignesNuit() {
         </div>
       )}
 
-      {/* Print header and content */}
-      <div className="print-scale-wrapper-nuit max-w-6xl mx-auto px-4 py-4 print:px-2 print:py-2 print:max-w-none" style={{ zoom: `${printScale}%` }}>
-        {/* Print header - only on print */}
-        <div className="hidden print:block mb-4 pb-2 border-b border-black">
-          <div className="flex items-baseline justify-between">
-            <div className="text-xl font-bold">Consignes de Nuit — {activeFloor}</div>
-            <div className="text-xs text-slate-600">
-              <span className="font-semibold">Date :</span> {date ? new Date(date + "T12:00:00").toLocaleDateString("fr-FR") : ""}
-              <span className="mx-2">|</span>
-              <span className="font-semibold">IDE d'astreinte :</span> {ideAstreinte}
+      {/* Print content */}
+      <div className="print-scale-wrapper-nuit max-w-6xl mx-auto px-4 py-4 print:px-1 print:py-1 print:max-w-none" style={{ zoom: `${printScale}%` }}>
+
+        {/* === PAGE 1 RECTO : MAPAD === */}
+        <div className="print-mapad-section">
+          {/* Header impression uniquement */}
+          <div className="hidden print:block mb-2 pb-1 border-b border-black">
+            <div className="flex items-baseline justify-between">
+              <div className="text-lg font-bold">Consignes de Nuit — {activeFloor} — Mapad</div>
+              <div className="text-xs text-slate-600">
+                <span className="font-semibold">Date :</span> {date ? new Date(date + "T12:00:00").toLocaleDateString("fr-FR") : ""}
+                <span className="mx-2">|</span>
+                <span className="font-semibold">IDE d'astreinte :</span> {ideAstreinte}
+              </div>
+            </div>
+          </div>
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2 print:hidden">Mapad</h2>
+          {notesLoading ? (
+            <div className="flex justify-center py-8"><Loader2 className="h-6 w-6 animate-spin text-slate-400" /></div>
+          ) : (
+            <SectionNuitTable
+              residents={mapadResidents}
+              notes={notesByFloor[activeFloor]}
+              onChangeNote={handleChangeNote}
+              locked={isCurrentLocked}
+              fontSize={fontSize}
+            />
+          )}
+        </div>
+
+        {/* === PAGE 2 VERSO : LONG SÉJOUR === */}
+        <div className="print-longsejour-section" style={{ marginTop: `${currentSpacing}px` }}>
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2 print:hidden">Long Séjour</h2>
+          {notesLoading ? null : (
+            <SectionNuitTable
+              residents={longSejourResidents}
+              notes={notesByFloor[activeFloor]}
+              onChangeNote={handleChangeNote}
+              locked={isCurrentLocked}
+              fontSize={fontSize}
+              showHeader={true}
+            />
+          )}
+          {/* Légende au bas du verso */}
+          <div className="mt-6 print:mt-2 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
+            <h3 className="text-sm font-semibold text-slate-700 mb-2">Légende</h3>
+            <div className="flex gap-6 text-sm text-slate-600 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Pill className="h-4 w-4" />
+                <span>Traitements écrasés</span>
+              </div>
+              <div className="flex items-center gap-2 print:flex">
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <span>Anticoagulants</span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Tables */}
-        {notesLoading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            {mapadResidents.length > 0 && (
-              <div>
-                <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2 print:hidden">Mapad</h2>
-                <SectionNuitTable
-                  title={`${activeFloor} Mapad`}
-                  residents={mapadResidents}
-                  notes={notesByFloor[activeFloor]}
-                  onChangeNote={handleChangeNote}
-                  locked={isCurrentLocked}
-                  fontSize={fontSize}
-                />
-              </div>
-            )}
-            {longSejourResidents.length > 0 && (
-              <div style={{ marginTop: `${currentSpacing}px` }}>
-                <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-widest mb-2 print:hidden">Long Séjour</h2>
-                <SectionNuitTable
-                  title={`${activeFloor} Long Séjour`}
-                  residents={longSejourResidents}
-                  notes={notesByFloor[activeFloor]}
-                  onChangeNote={handleChangeNote}
-                  locked={isCurrentLocked}
-                  fontSize={fontSize}
-                  showHeader={false}
-                />
-              </div>
-            )}
-          </div>
-        )}
-        
-        {/* Légende des icônes */}
-        <div className="mt-6 print:mt-4 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
-          <h3 className="text-sm font-semibold text-slate-700 mb-2">Légende</h3>
-          <div className="flex gap-6 text-sm text-slate-600 flex-wrap">
-            <div className="flex items-center gap-2">
-              <Pill className="h-4 w-4" />
-              <span>Traitements écrasés</span>
-            </div>
-            <div className="flex items-center gap-2 print:flex">
-              <AlertTriangle className="h-4 w-4 text-red-500" />
-              <span>Anticoagulants</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
