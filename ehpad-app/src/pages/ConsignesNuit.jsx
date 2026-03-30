@@ -337,14 +337,25 @@ export default function ConsignesNuit() {
     // (agrandit si peu de contenu, réduit si trop de contenu)
     const wrapper = document.querySelector('.print-scale-wrapper-nuit');
     if (wrapper) {
-      // Hauteur naturelle = hauteur rendue ÷ zoom actuel
-      const renderedHeight = wrapper.getBoundingClientRect().height;
-      const naturalHeight = renderedHeight / (printScale / 100);
+      // Le header d'impression est hidden à l'écran mais visible en impression :
+      // on le montre brièvement pour l'inclure dans la mesure
+      const printHeader = wrapper.firstElementChild;
+      let printHeaderHeight = 0;
+      if (printHeader && getComputedStyle(printHeader).display === 'none') {
+        printHeader.style.display = 'block';
+        void wrapper.offsetHeight; // force reflow
+        printHeaderHeight = printHeader.getBoundingClientRect().height / (printScale / 100);
+        printHeader.style.display = '';
+      }
 
-      // Cible : 2 pages A4 paysage (210mm - 8mm marges) × 2 = 404mm ≈ 1527px
-      // Marge sécurité 10% pour header d'impression et différences layout → 1374px
-      const TARGET_PX = 1374;
-      const autoScale = Math.max(40, Math.min(250, Math.round((TARGET_PX / naturalHeight) * 100)));
+      // Hauteur naturelle = (hauteur rendue ÷ zoom actuel) + header impression
+      const renderedHeight = wrapper.getBoundingClientRect().height;
+      const naturalHeight = renderedHeight / (printScale / 100) + printHeaderHeight;
+
+      // Cible : 2 pages A4 paysage (210mm - 8mm marges) × 2 = 1528px
+      // Marge sécurité 5% → 1452px
+      const TARGET_PX = 1452;
+      const autoScale = Math.max(40, Math.min(400, Math.round((TARGET_PX / naturalHeight) * 100)));
 
       // CSS print : annuler break-inside:avoid inline des <tr> pour que les rangées
       // se divisent naturellement entre les pages et utilisent tout l'espace
