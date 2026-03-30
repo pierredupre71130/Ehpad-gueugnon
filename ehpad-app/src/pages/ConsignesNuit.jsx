@@ -342,42 +342,67 @@ export default function ConsignesNuit() {
       return;
     }
 
-    // Réinitialiser le zoom à 1 pour mesures précises
-    const savedZoom = wrapper.style.zoom;
-    wrapper.style.zoom = '1';
+    const currentZoom = printScale / 100;
 
-    // Montrer le header d'impression (hidden à l'écran) pour inclure sa hauteur
-    const printHeader = mapadSection.querySelector('.hidden');
+    // Header impression (hidden à l'écran → montrer brièvement pour mesure)
+    const printHeader = document.getElementById('print-mapad-header');
     if (printHeader) printHeader.style.display = 'block';
-
     void wrapper.offsetHeight; // force reflow
 
-    const mapadH = mapadSection.getBoundingClientRect().height;
-    const longSejourH = longSejourSection.getBoundingClientRect().height;
+    const printHeaderH = printHeader
+      ? printHeader.getBoundingClientRect().height / currentZoom : 0;
 
-    // Restaurer
+    // En-tête de colonnes tableau MAPAD
+    const mapadThead = mapadSection.querySelector('thead');
+    const mapadTheadH = mapadThead
+      ? mapadThead.getBoundingClientRect().height / currentZoom : 0;
+
+    // En-tête de colonnes tableau Long Séjour
+    const lsThead = longSejourSection.querySelector('thead');
+    const lsTheadH = lsThead
+      ? lsThead.getBoundingClientRect().height / currentZoom : 0;
+
+    // Légende au bas du verso
+    const legend = document.getElementById('print-longsejour-legend');
+    const legendH = legend
+      ? legend.getBoundingClientRect().height / currentZoom : 0;
+
+    // Restaurer le header
     if (printHeader) printHeader.style.display = '';
-    wrapper.style.zoom = savedZoom;
 
-    // A4 paysage, marges @page 4mm/8mm → hauteur utilisable : (210−8)mm × 3.7795 ≈ 764px
-    const PAGE_H = 764;
-    const mapadScale      = Math.max(40, Math.min(400, Math.round((PAGE_H / mapadH) * 100)));
-    const longSejourScale = Math.max(40, Math.min(400, Math.round((PAGE_H / longSejourH) * 100)));
+    // A4 paysage, marges 4mm/8mm → hauteur utilisable ≈ 764px à zoom 100%
+    // On divise par currentZoom pour avoir les px dans le référentiel du wrapper actuel
+    const PAGE_H = 764 / currentZoom;
 
-    // CSS : reset zoom global, zoom indépendant par section, saut de page après MAPAD
+    const mapadCount = mapadResidents.length || 1;
+    const lsCount = longSejourResidents.length || 1;
+
+    // Page 1 : espace dispo = PAGE_H - header - en-tête colonnes - padding
+    const mapadRowH = Math.max(12, Math.floor(
+      (PAGE_H - printHeaderH - mapadTheadH - 8) / mapadCount
+    ));
+    // Page 2 : espace dispo = PAGE_H - en-tête colonnes - légende - padding
+    const lsRowH = Math.max(12, Math.floor(
+      (PAGE_H - lsTheadH - legendH - 8) / lsCount
+    ));
+
+    // Injection CSS : hauteurs par section + saut de page après MAPAD
     const styleEl = document.getElementById('print-scale-style-nuit');
     if (styleEl) {
       styleEl.textContent = `
         @page { margin: 4mm 8mm !important; }
         @media print {
-          .print-scale-wrapper-nuit { zoom: 1 !important; }
           .print-mapad-section {
-            zoom: ${mapadScale}% !important;
             break-after: page !important;
             page-break-after: always !important;
           }
+          .print-mapad-section tbody tr {
+            height: ${mapadRowH}px !important;
+          }
+          .print-longsejour-section tbody tr {
+            height: ${lsRowH}px !important;
+          }
           .print-longsejour-section {
-            zoom: ${longSejourScale}% !important;
             margin-top: 0 !important;
           }
           .print-mapad-section tr, .print-longsejour-section tr {
@@ -629,7 +654,7 @@ export default function ConsignesNuit() {
         {/* === PAGE 1 RECTO : MAPAD === */}
         <div className="print-mapad-section">
           {/* Header impression uniquement */}
-          <div className="hidden print:block mb-2 pb-1 border-b border-black">
+          <div id="print-mapad-header" className="hidden print:block mb-2 pb-1 border-b border-black">
             <div className="flex items-baseline justify-between">
               <div className="text-lg font-bold">Consignes de Nuit — {activeFloor} — Mapad</div>
               <div className="text-xs text-slate-600">
@@ -667,7 +692,7 @@ export default function ConsignesNuit() {
             />
           )}
           {/* Légende au bas du verso */}
-          <div className="mt-6 print:mt-2 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
+          <div id="print-longsejour-legend" className="mt-6 print:mt-2 bg-slate-50 border border-slate-200 rounded-lg px-4 py-3" style={{ WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' }}>
             <h3 className="text-sm font-semibold text-slate-700 mb-2">Légende</h3>
             <div className="flex gap-6 text-sm text-slate-600 flex-wrap">
               <div className="flex items-center gap-2">
