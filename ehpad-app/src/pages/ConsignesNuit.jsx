@@ -333,31 +333,31 @@ export default function ConsignesNuit() {
       toast.success("Consignes sauvegardées", { duration: 3000 });
     }
 
-    // Auto-ajustement du zoom pour garantir 2 pages A4 paysage max
+    // Auto-ajustement du zoom pour remplir exactement 2 pages A4 paysage
+    // (agrandit si peu de contenu, réduit si trop de contenu)
     const wrapper = document.querySelector('.print-scale-wrapper-nuit');
     if (wrapper) {
-      // Hauteur naturelle = hauteur visuelle ÷ zoom actuel
+      // Hauteur naturelle = hauteur rendue ÷ zoom actuel
       const renderedHeight = wrapper.getBoundingClientRect().height;
       const naturalHeight = renderedHeight / (printScale / 100);
 
       // Cible : 2 pages A4 paysage (210mm - 8mm marges) × 2 = 404mm ≈ 1527px
-      // Marge de sécurité 10% → 1374px effectifs
+      // Marge sécurité 10% pour header d'impression et différences layout → 1374px
       const TARGET_PX = 1374;
+      const autoScale = Math.max(40, Math.min(250, Math.round((TARGET_PX / naturalHeight) * 100)));
 
-      if (naturalHeight > TARGET_PX) {
-        const autoScale = Math.max(40, Math.floor((TARGET_PX / naturalHeight) * 100));
-        // Supprimer page-break-inside:avoid pour que les lignes se divisent
-        // naturellement et maximisent l'espace des 2 pages
-        const style = document.getElementById('print-scale-style-nuit');
-        if (style) {
-          style.textContent = `@page { margin: 4mm 8mm !important; } @media print { .print-scale-wrapper-nuit tr { min-height: ${rowHeight}px !important; } .print-scale-wrapper-nuit td { padding-top: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; padding-bottom: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; } }`;
-        }
-        setPrintScale(autoScale);
-        localStorage.setItem('nuit_printScale', String(autoScale));
-        // Attendre le re-render React avant d'imprimer
-        setTimeout(() => window.print(), 200);
-        return;
+      // CSS print : annuler break-inside:avoid inline des <tr> pour que les rangées
+      // se divisent naturellement entre les pages et utilisent tout l'espace
+      const styleEl = document.getElementById('print-scale-style-nuit');
+      if (styleEl) {
+        styleEl.textContent = `@page { margin: 4mm 8mm !important; } @media print { .print-scale-wrapper-nuit tr { break-inside: auto !important; page-break-inside: auto !important; min-height: ${rowHeight}px !important; } .print-scale-wrapper-nuit td { padding-top: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; padding-bottom: ${Math.max(1, Math.round((rowHeight - 16) / 2))}px !important; } }`;
       }
+
+      setPrintScale(autoScale);
+      localStorage.setItem('nuit_printScale', String(autoScale));
+      // Attendre le re-render React avant d'imprimer
+      setTimeout(() => window.print(), 200);
+      return;
     }
 
     window.print();
