@@ -1,14 +1,22 @@
-import { createClient } from '@base44/sdk';
-import { appParams } from '@/lib/app-params';
+import * as entities from '@/lib/storage';
 
-const { appId, token, functionsVersion, appBaseUrl } = appParams;
+const noOp = () => Promise.resolve(null);
 
-//Create a client with authentication required
-export const base44 = createClient({
-  appId,
-  token,
-  functionsVersion,
-  serverUrl: '',
-  requiresAuth: false,
-  appBaseUrl
-});
+export const base44 = {
+  entities,
+  integrations: {
+    Core: {
+      UploadFile: noOp,
+      ExtractDataFromUploadedFile: noOp,
+      InvokeLLM: noOp,
+    },
+  },
+  auth: {
+    me: noOp,
+    logout: noOp,
+    redirectToLogin: noOp,
+  },
+  appLogs: {
+    logUserInApp: noOp,
+  },
+};

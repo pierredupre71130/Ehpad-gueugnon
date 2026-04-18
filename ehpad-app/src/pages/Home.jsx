@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { ClipboardList, FileText, Pill, Moon, Users, Tag, Clipboard, Settings, X, GripVertical } from "lucide-react";
+import ExportImport from "@/components/ExportImport";
 
 const DEFAULT_LAYOUT = [
   ["Consignes", "ConsignesNuit", "FichesDePosteAccueil"],
@@ -136,8 +137,8 @@ export default function Home() {
 
       </div>
 
-      {/* Edit mode toggle */}
-      <div className="relative z-10 mt-5">
+      {/* Edit mode toggle + Export/Import */}
+      <div className="relative z-10 mt-5 flex flex-col items-center gap-3">
         {editMode ? (
           <button
             onClick={() => setEditMode(false)}
@@ -153,6 +154,7 @@ export default function Home() {
             <Settings className="h-3.5 w-3.5" /> Réorganiser
           </button>
         )}
+        <ExportImport />
       </div>
 
       {/* Password modal */}
