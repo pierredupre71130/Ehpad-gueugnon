@@ -1,0 +1,29 @@
+{
+  "name": "BilanSpecial",
+  "type": "object",
+  "properties": {
+    "nom": {
+      "type": "string",
+      "description": "Nom du bilan sp\u00e9cial (ex: HbA1c, TSH...)"
+    },
+    "code": {
+      "type": "string",
+      "description": "Abr\u00e9viation (ex: HBG, TSH)"
+    },
+    "indication": {
+      "type": "string",
+      "description": "Indication clinique (ex: Diab\u00e8te, Dysthyro\u00efdie...)"
+    },
+    "examens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des examens associ\u00e9s \u00e0 ce bilan sp\u00e9cial"
+    }
+  },
+  "required": [
+    "nom",
+    "code"
+  ]
+}

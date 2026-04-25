@@ -1,0 +1,47 @@
+{
+  "name": "Vaccination",
+  "type": "object",
+  "properties": {
+    "resident_id": {
+      "type": "string",
+      "description": "ID du r\u00e9sident (vide si r\u00e9sident historique non li\u00e9)"
+    },
+    "resident_name": {
+      "type": "string",
+      "description": "Nom du r\u00e9sident"
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "R\u00e9sident sorti / archiv\u00e9",
+      "default": false
+    },
+    "year": {
+      "type": "number",
+      "description": "Ann\u00e9e de vaccination"
+    },
+    "covid_inj1": {
+      "type": "string",
+      "description": "Date injection Covid 1 (YYYY-MM-DD) ou statut (REFUS, etc.)"
+    },
+    "covid_inj2": {
+      "type": "string",
+      "description": "Date injection Covid 2 (YYYY-MM-DD) ou statut"
+    },
+    "covid_inj3": {
+      "type": "string",
+      "description": "Date injection Covid 3 (YYYY-MM-DD) ou statut"
+    },
+    "grippe_inj1": {
+      "type": "string",
+      "description": "Date injection Grippe (YYYY-MM-DD) ou statut (REFUS, etc.)"
+    },
+    "infos": {
+      "type": "string",
+      "description": "Informations compl\u00e9mentaires"
+    }
+  },
+  "required": [
+    "resident_name",
+    "year"
+  ]
+}

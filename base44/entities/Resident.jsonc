@@ -1,0 +1,143 @@
+{
+  "name": "Resident",
+  "type": "object",
+  "properties": {
+    "room": {
+      "type": "string",
+      "description": "Num\u00e9ro de chambre (ex: 101, 9G, 23P)"
+    },
+    "title": {
+      "type": "string",
+      "enum": [
+        "Mme",
+        "Mr",
+        "Me"
+      ],
+      "description": "Civilit\u00e9"
+    },
+    "last_name": {
+      "type": "string",
+      "description": "Nom de famille"
+    },
+    "first_name": {
+      "type": "string",
+      "description": "Pr\u00e9nom"
+    },
+    "date_naissance": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de naissance"
+    },
+    "date_entree": {
+      "type": "string",
+      "format": "date",
+      "description": "Date d'entr\u00e9e dans l'\u00e9tablissement"
+    },
+    "floor": {
+      "type": "string",
+      "enum": [
+        "RDC",
+        "1ER"
+      ],
+      "description": "\u00c9tage"
+    },
+    "section": {
+      "type": "string",
+      "enum": [
+        "Long S\u00e9jour",
+        "Mapad"
+      ],
+      "description": "Section (Long S\u00e9jour ou Mapad)"
+    },
+    "annotations": {
+      "type": "string",
+      "description": "Infos importantes (DNID, O2, allergies\u2026)"
+    },
+    "consignes": {
+      "type": "string",
+      "description": "Consignes journali\u00e8res"
+    },
+    "ta_number": {
+      "type": "number",
+      "description": "Num\u00e9ro TA"
+    },
+    "sort_order": {
+      "type": "number",
+      "description": "Ordre d'affichage dans la liste"
+    },
+    "regime_mixe": {
+      "type": "boolean",
+      "description": "R\u00e9gime mix\u00e9"
+    },
+    "viande_mixee": {
+      "type": "boolean",
+      "description": "Viande mix\u00e9e uniquement"
+    },
+    "regime_diabetique": {
+      "type": "boolean",
+      "description": "R\u00e9gime diab\u00e9tique"
+    },
+    "epargne_intestinale": {
+      "type": "boolean",
+      "description": "\u00c9pargne intestinale"
+    },
+    "allergie_poisson": {
+      "type": "boolean",
+      "description": "Allergie poisson"
+    },
+    "traitement_ecrase": {
+      "type": "boolean",
+      "description": "Traitements \u00e0 \u00e9craser"
+    },
+    "insuline_matin": {
+      "type": "boolean",
+      "description": "Insuline le matin"
+    },
+    "insuline_soir": {
+      "type": "boolean",
+      "description": "Insuline le soir"
+    },
+    "anticoagulants": {
+      "type": "boolean",
+      "description": "Traitement anticoagulant"
+    },
+    "appel_nuit": {
+      "type": "boolean",
+      "description": "Appel de nuit"
+    },
+    "referent": {
+      "type": "string",
+      "description": "Soignant r\u00e9f\u00e9rent du r\u00e9sident"
+    },
+    "medecin": {
+      "type": "string",
+      "description": "M\u00e9decin traitant"
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "R\u00e9sident archiv\u00e9 (d\u00e9c\u00e9d\u00e9 ou sorti)",
+      "default": false
+    },
+    "date_sortie": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de sortie / d\u00e9c\u00e8s"
+    },
+    "motif_sortie": {
+      "type": "string",
+      "enum": [
+        "D\u00e9c\u00e8s",
+        "Transfert",
+        "Retour domicile",
+        "Autre"
+      ],
+      "description": "Motif de sortie"
+    }
+  },
+  "required": [
+    "room",
+    "last_name",
+    "floor",
+    "section"
+  ]
+}

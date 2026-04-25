@@ -1,0 +1,68 @@
+{
+  "name": "SuiviAntalgique",
+  "type": "object",
+  "properties": {
+    "nom": {
+      "type": "string",
+      "description": "Nom et pr\u00e9nom du r\u00e9sident"
+    },
+    "chambre": {
+      "type": "string",
+      "description": "Num\u00e9ro de chambre"
+    },
+    "traitement": {
+      "type": "string",
+      "description": "Type de traitement"
+    },
+    "type_suivi": {
+      "type": "string",
+      "enum": [
+        "calendrier",
+        "posologie",
+        "contention"
+      ],
+      "description": "Type de suivi"
+    },
+    "date_debut": {
+      "type": "string",
+      "description": "Date de premi\u00e8re pose"
+    },
+    "date_fin": {
+      "type": "string",
+      "description": "Date de fin de prescription"
+    },
+    "pas_de_fin": {
+      "type": "boolean",
+      "description": "Pas de date de fin"
+    },
+    "si_besoin": {
+      "type": "boolean",
+      "description": "Prescription si besoin / \u00e0 la demande"
+    },
+    "poso_matin": {
+      "type": "boolean",
+      "description": "Prise le matin"
+    },
+    "poso_midi": {
+      "type": "boolean",
+      "description": "Prise le midi"
+    },
+    "poso_soir": {
+      "type": "boolean",
+      "description": "Prise le soir"
+    },
+    "prescripteur": {
+      "type": "string",
+      "description": "Nom du prescripteur"
+    },
+    "dotation_nominative": {
+      "type": "boolean",
+      "description": "Dotation nominative"
+    }
+  },
+  "required": [
+    "nom",
+    "traitement",
+    "type_suivi"
+  ]
+}

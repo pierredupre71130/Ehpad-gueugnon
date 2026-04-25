@@ -1,0 +1,32 @@
+{
+  "name": "CatalogueExamen",
+  "type": "object",
+  "properties": {
+    "nom": {
+      "type": "string",
+      "description": "Nom de l'examen"
+    },
+    "tube": {
+      "type": "string",
+      "enum": [
+        "vert",
+        "violet",
+        "gris",
+        "bleu",
+        "jaune",
+        "rouge",
+        "capillaire",
+        "urine"
+      ],
+      "description": "Couleur du tube"
+    },
+    "categorie": {
+      "type": "string",
+      "description": "Cat\u00e9gorie (ex: M\u00e9dicaments, Divers\u2026)"
+    }
+  },
+  "required": [
+    "nom",
+    "tube"
+  ]
+}

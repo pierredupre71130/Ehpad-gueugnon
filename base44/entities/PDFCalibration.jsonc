@@ -1,0 +1,115 @@
+{
+  "name": "PDFCalibration",
+  "type": "object",
+  "properties": {
+    "nom_x": {
+      "type": "number",
+      "description": "Position X du nom (pts)"
+    },
+    "nom_y_from_top": {
+      "type": "number",
+      "description": "Position Y du nom depuis le haut (pts)"
+    },
+    "prenom_x": {
+      "type": "number",
+      "description": "Position X du pr\u00e9nom (pts)"
+    },
+    "prenom_y_from_top": {
+      "type": "number",
+      "description": "Position Y du pr\u00e9nom depuis le haut (pts)"
+    },
+    "prescripteur_x": {
+      "type": "number",
+      "description": "Position X du prescripteur (pts)"
+    },
+    "prescripteur_y_from_top": {
+      "type": "number",
+      "description": "Position Y du prescripteur depuis le haut (pts)"
+    },
+    "jour_x": {
+      "type": "number",
+      "description": "Position X du jour de pr\u00e9l\u00e8vement (pts)"
+    },
+    "jour_y_from_top": {
+      "type": "number",
+      "description": "Position Y du jour de pr\u00e9l\u00e8vement depuis le haut (pts)"
+    },
+    "mois_x": {
+      "type": "number",
+      "description": "Position X du mois de pr\u00e9l\u00e8vement (pts)"
+    },
+    "mois_y_from_top": {
+      "type": "number",
+      "description": "Position Y du mois de pr\u00e9l\u00e8vement depuis le haut (pts)"
+    },
+    "annee_x": {
+      "type": "number",
+      "description": "Position X de l'ann\u00e9e de pr\u00e9l\u00e8vement (pts)"
+    },
+    "annee_y_from_top": {
+      "type": "number",
+      "description": "Position Y de l'ann\u00e9e de pr\u00e9l\u00e8vement depuis le haut (pts)"
+    },
+    "check_x_offset": {
+      "type": "number",
+      "description": "D\u00e9calage X global des cases \u00e0 cocher (pts)"
+    },
+    "check_y_offset": {
+      "type": "number",
+      "description": "D\u00e9calage Y global des cases \u00e0 cocher (pts)"
+    },
+    "nfs_y_extra": {
+      "type": "number",
+      "description": "D\u00e9calage Y suppl\u00e9mentaire pour NFS (pts, positif = vers le bas)"
+    },
+    "nb_echantillons_x": {
+      "type": "number",
+      "description": "Position X du nombre d'\u00e9chantillons (pts)"
+    },
+    "nb_echantillons_y_from_top": {
+      "type": "number",
+      "description": "Position Y du nombre d'\u00e9chantillons depuis le haut (pts)"
+    },
+    "presc_jour_x": {
+      "type": "number",
+      "description": "Position X du jour de prescription (pts)"
+    },
+    "presc_jour_y_from_top": {
+      "type": "number",
+      "description": "Position Y du jour de prescription depuis le haut (pts)"
+    },
+    "presc_mois_x": {
+      "type": "number",
+      "description": "Position X du mois de prescription (pts)"
+    },
+    "presc_mois_y_from_top": {
+      "type": "number",
+      "description": "Position Y du mois de prescription depuis le haut (pts)"
+    },
+    "presc_annee_x": {
+      "type": "number",
+      "description": "Position X de l'ann\u00e9e de prescription (pts)"
+    },
+    "presc_annee_y_from_top": {
+      "type": "number",
+      "description": "Position Y de l'ann\u00e9e de prescription depuis le haut (pts)"
+    },
+    "ajeun_x": {
+      "type": "number",
+      "description": "Position X de la croix Patient \u00e0 jeun (pts)"
+    },
+    "ajeun_y_from_top": {
+      "type": "number",
+      "description": "Position Y de la croix Patient \u00e0 jeun depuis le haut (pts)"
+    },
+    "poids_x": {
+      "type": "number",
+      "description": "Position X du poids du patient (pts)"
+    },
+    "poids_y_from_top": {
+      "type": "number",
+      "description": "Position Y du poids du patient depuis le haut (pts)"
+    }
+  },
+  "required": []
+}

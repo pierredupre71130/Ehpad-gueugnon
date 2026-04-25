@@ -1,0 +1,47 @@
+{
+  "name": "NutritionalStatus",
+  "type": "object",
+  "properties": {
+    "resident_id": {
+      "type": "string",
+      "description": "ID du r\u00e9sident"
+    },
+    "resident_name": {
+      "type": "string",
+      "description": "Nom du r\u00e9sident"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "l\u00e9ger",
+        "mod\u00e9r\u00e9",
+        "s\u00e9v\u00e8re"
+      ],
+      "description": "Statut nutritionnel"
+    },
+    "imc": {
+      "type": "number",
+      "description": "IMC (Indice de Masse Corporelle)"
+    },
+    "date_assessment": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de l'\u00e9valuation"
+    },
+    "clinical_notes": {
+      "type": "string",
+      "description": "Notes cliniques et actions"
+    },
+    "suspected_cause": {
+      "type": "string",
+      "description": "Cause suspect\u00e9e de la variation de poids"
+    }
+  },
+  "required": [
+    "resident_id",
+    "resident_name",
+    "status",
+    "date_assessment"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "ExamCalibration",
+  "type": "object",
+  "properties": {
+    "exam_name": {
+      "type": "string",
+      "description": "Nom de l'examen (ex: NFS, TSH, Glyc\u00e9mie)"
+    },
+    "x": {
+      "type": "number",
+      "description": "Position X de la case \u00e0 cocher"
+    },
+    "y": {
+      "type": "number",
+      "description": "Position Y de la case \u00e0 cocher"
+    }
+  },
+  "required": [
+    "exam_name",
+    "x",
+    "y"
+  ]
+}

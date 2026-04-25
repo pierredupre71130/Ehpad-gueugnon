@@ -1,0 +1,20 @@
+{
+  "name": "MedecinBilanConfig",
+  "type": "object",
+  "properties": {
+    "medecin_name": {
+      "type": "string",
+      "description": "Nom du m\u00e9decin"
+    },
+    "jours": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Jours possibles pour le pr\u00e9l\u00e8vement (lundi, mardi, mercredi, jeudi, vendredi)"
+    }
+  },
+  "required": [
+    "medecin_name"
+  ]
+}

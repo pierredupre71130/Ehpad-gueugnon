@@ -1,0 +1,28 @@
+{
+  "name": "BilanReferentiel",
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Code du bilan (B3, B6, BC)"
+    },
+    "label": {
+      "type": "string",
+      "description": "Libell\u00e9 du bilan"
+    },
+    "frequence": {
+      "type": "string",
+      "description": "Fr\u00e9quence du bilan"
+    },
+    "examens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des examens inclus dans ce bilan"
+    }
+  },
+  "required": [
+    "code"
+  ]
+}

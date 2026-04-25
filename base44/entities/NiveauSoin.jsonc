@@ -1,0 +1,45 @@
+{
+  "name": "NiveauSoin",
+  "type": "object",
+  "properties": {
+    "resident_id": {
+      "type": "string",
+      "description": "ID du r\u00e9sident"
+    },
+    "resident_name": {
+      "type": "string",
+      "description": "Nom du r\u00e9sident"
+    },
+    "gir": {
+      "type": "string",
+      "description": "Niveau GIR (1 \u00e0 4, ou N/A pour moins de 60 ans)"
+    },
+    "niveau_soin": {
+      "type": "string",
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "En cours"
+      ],
+      "description": "Niveau de soin"
+    },
+    "appel_nuit": {
+      "type": "boolean",
+      "description": "Appel de nuit"
+    },
+    "appel_nuit_info": {
+      "type": "string",
+      "description": "Informations appel de nuit"
+    },
+    "pompes_funebres": {
+      "type": "string",
+      "description": "Pompes fun\u00e8bres"
+    }
+  },
+  "required": [
+    "resident_id",
+    "resident_name"
+  ]
+}

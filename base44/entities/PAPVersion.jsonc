@@ -1,0 +1,28 @@
+{
+  "name": "PAPVersion",
+  "type": "object",
+  "properties": {
+    "resident_id": {
+      "type": "string",
+      "description": "ID du r\u00e9sident"
+    },
+    "resident_name": {
+      "type": "string",
+      "description": "Nom du r\u00e9sident"
+    },
+    "saved_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date de sauvegarde de la version"
+    },
+    "data": {
+      "type": "string",
+      "description": "JSON s\u00e9rialis\u00e9 du PAP \u00e0 ce moment"
+    }
+  },
+  "required": [
+    "resident_id",
+    "resident_name",
+    "data"
+  ]
+}

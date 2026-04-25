@@ -1,0 +1,51 @@
+{
+  "name": "SurveillanceSettings",
+  "type": "object",
+  "properties": {
+    "max_weights_display": {
+      "type": "number",
+      "description": "Nombre maximum de points affich\u00e9s sur le graphique"
+    },
+    "trend_down_threshold": {
+      "type": "number",
+      "description": "Seuil de tendance \u00e0 la baisse (%)"
+    },
+    "trend_up_threshold": {
+      "type": "number",
+      "description": "Seuil de tendance \u00e0 la hausse (%)"
+    },
+    "loss_1m_pct": {
+      "type": "number",
+      "description": "Alerte d\u00e9nutrition : % de perte sur la p\u00e9riode courte (d\u00e9faut: 5)"
+    },
+    "loss_1m_days": {
+      "type": "number",
+      "description": "Alerte d\u00e9nutrition : nombre de jours pour la p\u00e9riode courte (d\u00e9faut: 30)"
+    },
+    "loss_6m_pct": {
+      "type": "number",
+      "description": "Alerte d\u00e9nutrition : % de perte sur la p\u00e9riode longue (d\u00e9faut: 10)"
+    },
+    "loss_6m_days": {
+      "type": "number",
+      "description": "Alerte d\u00e9nutrition : nombre de jours pour la p\u00e9riode longue (d\u00e9faut: 180)"
+    },
+    "gain_short_pct": {
+      "type": "number",
+      "description": "Alerte surcharge : % de prise sur la p\u00e9riode courte (d\u00e9faut: 5)"
+    },
+    "gain_short_days": {
+      "type": "number",
+      "description": "Alerte surcharge : nombre de jours pour la p\u00e9riode courte (d\u00e9faut: 40)"
+    },
+    "gain_long_pct": {
+      "type": "number",
+      "description": "Alerte surcharge : % de prise sur la p\u00e9riode longue (d\u00e9faut: 10)"
+    },
+    "gain_long_days": {
+      "type": "number",
+      "description": "Alerte surcharge : nombre de jours pour la p\u00e9riode longue (d\u00e9faut: 180)"
+    }
+  },
+  "required": []
+}

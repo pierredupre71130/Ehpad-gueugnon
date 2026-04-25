@@ -1,0 +1,85 @@
+{
+  "name": "PlanningBilanCell",
+  "type": "object",
+  "properties": {
+    "resident_id": {
+      "type": "string",
+      "description": "ID du r\u00e9sident"
+    },
+    "resident_name": {
+      "type": "string",
+      "description": "Nom complet du r\u00e9sident"
+    },
+    "room": {
+      "type": "string",
+      "description": "Chambre"
+    },
+    "floor": {
+      "type": "string",
+      "description": "\u00c9tage (RDC / 1ER)"
+    },
+    "medecin": {
+      "type": "string",
+      "description": "M\u00e9decin traitant"
+    },
+    "annee": {
+      "type": "number",
+      "description": "Ann\u00e9e"
+    },
+    "mois": {
+      "type": "number",
+      "description": "Mois 1-12"
+    },
+    "bilan_ref_id": {
+      "type": "string",
+      "description": "ID du r\u00e9f\u00e9rentiel BilanReferentiel"
+    },
+    "bilan_ref_code": {
+      "type": "string",
+      "description": "Code du r\u00e9f\u00e9rentiel (B3, B6, BC\u2026)"
+    },
+    "extra_examens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Examens suppl\u00e9mentaires"
+    },
+    "bilan_label": {
+      "type": "string",
+      "description": "Libell\u00e9 complet affich\u00e9 ex: B3 + HBG"
+    },
+    "jour": {
+      "type": "number",
+      "description": "Jour du mois pr\u00e9vu (si p\u00e9riodicit\u00e9 1)"
+    },
+    "jours": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Jours du mois pr\u00e9vus (si p\u00e9riodicit\u00e9 > 1)"
+    },
+    "periodicite": {
+      "type": "number",
+      "description": "Nombre de fois par mois (ex: 2 = 2x/mois)"
+    },
+    "date_prescription": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de prescription (1er pr\u00e9l\u00e8vement du mois, format YYYY-MM-DD)"
+    },
+    "dates_prescription": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Toutes les dates de prescription du mois (format YYYY-MM-DD), une par passage"
+    }
+  },
+  "required": [
+    "resident_id",
+    "annee",
+    "mois"
+  ]
+}

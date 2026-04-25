@@ -1,0 +1,53 @@
+{
+  "name": "BilanSanguin",
+  "type": "object",
+  "properties": {
+    "resident_id": {
+      "type": "string",
+      "description": "ID du r\u00e9sident"
+    },
+    "resident_name": {
+      "type": "string",
+      "description": "Nom du r\u00e9sident"
+    },
+    "room": {
+      "type": "string",
+      "description": "Chambre"
+    },
+    "date_prelevement": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de pr\u00e9l\u00e8vement"
+    },
+    "type_bilan": {
+      "type": "string",
+      "description": "Type de bilan (ex: NFS, ionogramme...)"
+    },
+    "prescripteur": {
+      "type": "string",
+      "description": "M\u00e9decin prescripteur"
+    },
+    "laboratoire": {
+      "type": "string",
+      "description": "Laboratoire"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes compl\u00e9mentaires"
+    },
+    "statut": {
+      "type": "string",
+      "enum": [
+        "Planifi\u00e9",
+        "Fait",
+        "Annul\u00e9"
+      ],
+      "description": "Statut du bilan"
+    }
+  },
+  "required": [
+    "resident_id",
+    "resident_name",
+    "date_prelevement"
+  ]
+}
